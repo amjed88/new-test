@@ -1,4 +1,4 @@
-import React, { useState, component, useEffect } from 'react';
+import React, { useState, component, useEffect,useCallback } from 'react';
 import "./comp.css"
 import {
     ModalProvider,
@@ -22,18 +22,20 @@ function Categ() {
     const [check,setcheck]=useState(true);
 
     const [display, setdisplay] = useState([]);
-    useEffect(() => {
-        fetch("http://localhost:3000/api/get/Categ/all", {
+    const displays = useCallback(async()=>{
+        const res=await fetch("http://localhost:3000/api/get/Categ/all", {
             method: "get",
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "content-type": "application/json"
             }
         })
-            .then(res => res.json())
-            .then(dataa => {
-                setdisplay(dataa)
-            });
+            const respose=await res.json()
+            setdisplay(respose)
+
+    });
+    useEffect(() => {
+        displays();
 
     });
     const onaction = (e) => {
@@ -53,6 +55,7 @@ function Categ() {
                 console.log(data)
             }
             )
+            { displays()};
     }
     const ondel=(availability)=>{
         fetch("http://localhost:3000/api/get/categ/del", {
@@ -70,6 +73,7 @@ function Categ() {
             .then(data => {
             }
             )
+            { displays()};
 }
 const onedit=()=>{
     fetch("http://localhost:3000/api/get/categ/update", {
@@ -88,6 +92,7 @@ const onedit=()=>{
         .then(data => {
         }
         )
+        { displays()};
 }
 
 

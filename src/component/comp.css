@@ -30,11 +30,12 @@ h2{
     float: right;
     padding-right: 10px;
     font-style: italic;
+    padding-top: 40px;
 }
 .add-buttom{
     width: 100%;
-    padding-top: 40px;
-    position: fixed;
+    padding-top: 90px;
+    /* position: fixed; */
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -87,26 +88,37 @@ border-radius: 100px;
 }
 
 .navebar{
-    overflow: hidden;
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    z-index: 999;
+    opacity: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #ba68c8;
     color: #fff;
-}
-.continet{
-    width: 80%;
-    margin-right: 0px;
-    margin-left: 40%;
+    right: 0;
 }
 
-ul{
-    width: 70%;
+
+ul {
+    /* width: 70%;
     float: left;
     padding: 0;
-    text-align: right;
+    text-align: right; */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+nav ul li{
+    display: inline;
+    margin: 1.5vw;
 }
 .a{
     text-decoration: none;
     color: #fff;
-    margin: 0 15px;
+    margin:0 15px;
 }
 .model-con{
     position: fixed;
@@ -150,9 +162,7 @@ ul{
 .cal-labl4{
     font-size:30px;
 }
-h3{
-    float: left;
-}
+
 .drop{
     display: none;
     position: absolute;
@@ -162,4 +172,35 @@ h3{
 .drops-down:hover .drop{
     display: block;
 
+}
+.mobile{
+    display :none;
+}
+@media (max-width: 992px) {
+    .navication{
+        display: none;
+    }
+    .mobile{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: white;
+    }
+    ul{
+        display: flex;
+        flex-direction: column;
+        right: 0;
+        margin-top: 55px;
+        width: 100%;
+        background-color: #181818;
+        border-top: 2px solid #8c1cd1;
+        padding-left: 85%;
+    }
+ 
+}
+.humburker{
+    color: black;
+    position: absolute;
+    right: 2%;
+    cursor: pointer;
 }

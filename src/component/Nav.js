@@ -1,17 +1,16 @@
 import react,{component,useState} from 'react';
 import {Link ,NavLink} from 'react-router-dom'
 import "./comp.css"
+import Humburker from './Humburker';
+import Navication from './Navication';
 
 
 function Nav(){
     return(
         <div className="navebar">
-            <div className="continet">
-            <ul className="ul">
-                <Link className="a" to="/categ">التصنيفات</Link>
-                <Link className="a" to="/post">المنشورات</Link>
-            </ul>  
-            </div>
+                < Humburker />
+                <Navication />
+
 
         </div>
     )

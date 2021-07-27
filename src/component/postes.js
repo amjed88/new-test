@@ -1,4 +1,4 @@
-import React, { useState, component, useEffect } from 'react';
+import React, { useState, component, useEffect,useCallback } from 'react';
 import {
     ModalProvider,
     Modal,
@@ -49,22 +49,20 @@ function Post() {
                 setselects(dataa)
             });
     }
-    const display =()=>{
-        fetch("http://localhost:3000/api/get/post/all", {
+    const display = useCallback(async()=>{
+        const res=await fetch("http://localhost:3000/api/get/post/all", {
             method: "get",
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "content-type": "application/json"
             }
         })
-            .then(res => res.json())
-            .then(dataa => {
-                setdesplay(dataa)
-            });
+            const respose=await res.json()
+            setdesplay(respose)
 
-    }
+    });
     useEffect(() => {
-        {display()};
+        display();
 
     });
     const onchange = (e) => {
@@ -88,6 +86,7 @@ function Post() {
             .then(data => {
             }
             )
+            {display()};
 
 
     }
@@ -110,6 +109,7 @@ function Post() {
                 .then(data => {
                 }
                 )
+                {display()};
 
     }
     const ondel=(availability)=>{
@@ -128,6 +128,7 @@ function Post() {
             .then(data => {
             }
             )
+            {display()};
 }
 
 
@@ -171,7 +172,7 @@ function Post() {
                                 <input className="cat-add4" type="text" value={data.postitl} onChange={(e) => setdata({...data, postitl: e.target.value })} />
                             </div>
                             </div>
-                            <button className="cat-but" onClick={()=> {check? onaction():onedit()}} > {buttomtext}</button>
+                            <button className="cat-but" onClick={()=> {check? onaction():onedit();closeModal()}} > {buttomtext}</button>
                             <button className="cat-but2" onClick={closeModal}>الغاء</button>
                         </Modal>
                     </>
