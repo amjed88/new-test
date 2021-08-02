@@ -9,10 +9,8 @@ import 'react-simple-hook-modal/dist/styles.css';
 import "./comp.css"
 import DatePicker from 'react-date-picker';
 import Select from 'react-select';
-
-
-
-
+import dayjs from 'dayjs';
+import { MdClose } from "react-icons/md";
 
 function Post() {
     const { isModalOpen, openModal, closeModal } = useModal();
@@ -30,6 +28,19 @@ function Post() {
         categuray:null
 
     });
+     const endPoints =
+    process.env.NODE_ENV !== 'production' ?
+        {
+            TASK: process.env.REACT_APP_api_pst,
+            AUTH: process.env.REACT_APP_api_cat
+
+        }
+        :
+        {
+            TASK: `${window.location.protocol}//${window.location.hostname}:${process.env.REACT_APP_api_pst}`,
+            AUTH: `${window.location.protocol}//${window.location.hostname}:${process.env.REACT_APP_api_cat}`
+
+        }
     const [desplay, setdesplay] = useState([]);
     const [id,setid]=useState({
         catid:null,
@@ -37,7 +48,7 @@ function Post() {
     const [buttomtext,setbuttomtext]=useState("اضافة");
     const [check,setcheck]=useState(true);
     const cat =()=>{
-                fetch("http://localhost:3000/api/get/Categ/all", {
+                fetch(`${endPoints.AUTH}/Categ/all`, {
             method: "get",
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -50,7 +61,7 @@ function Post() {
             });
     }
     const display = useCallback(async()=>{
-        const res=await fetch("http://localhost:3000/api/get/post/all", {
+        const res=await fetch(`${endPoints.TASK}/post/all`, {
             method: "get",
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -60,16 +71,16 @@ function Post() {
             const respose=await res.json()
             setdesplay(respose)
 
-    });
+    },[]);
     useEffect(() => {
         display();
 
-    });
+    },[display]);
     const onchange = (e) => {
         setid({ ...id, catid: e.value });
     }
     const onaction = () => {
-        fetch("http://localhost:3000/api/get/post/insert", {
+        fetch(`${endPoints.TASK}/post/insert`, {
             method: "post",
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -83,15 +94,14 @@ function Post() {
             })
         })
             .then(res => res.json())
-            .then(data => {
-            }
-            )
-            {display()};
+            .then(data => {display()
+            });
+            
 
 
     }
     const onedit=()=>{
-            fetch("http://localhost:3000/api/get/post/updat", {
+            fetch(`${endPoints.TASK}/post/updat`, {
                 method: "put",
                 headers: {
                     "Access-Control-Allow-Origin": "*",
@@ -106,14 +116,11 @@ function Post() {
                 })
             })
                 .then(res => res.json())
-                .then(data => {
-                }
-                )
-                {display()};
-
+                .then(data => {display()
+                });
     }
     const ondel=(availability)=>{
-        fetch("http://localhost:3000/api/get/post/del", {
+        fetch(`${endPoints.TASK}/post/del`, {
             method: "delete",
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -125,20 +132,12 @@ function Post() {
             })
         })
             .then(res => res.json())
-            .then(data => {
-            }
-            )
-            {display()};
+            .then(data => {display()
+            });
+            
 }
 
-
-
-
-
-
-
-
-    return (
+return (
         <div className="cat-main">
             <div>
                 <header>
@@ -160,6 +159,11 @@ function Post() {
                         >
                             <div className="model-con">
                             <div className="pos-model">
+                            <div className="close">
+                                        <MdClose className="clos-model"
+                                            onClick={() => closeModal()}
+                                        />
+                                    </div>
                                 <label className="cat-lbl" >:التصنيف</label>
                                 <Select className="cat-select" defaultValue={{label:data.categuray}} options={selects.map(res => ({ value: res.id, label: res.categuray }))} onChange={(e) => onchange(e)} openMenuOnClick={cat()} />
                                 <label className="cat-lbl2">:التاريخ</label>
@@ -195,7 +199,7 @@ function Post() {
                         {desplay.map(availability => {
                             return (
                                 <tr>
-                                    <td>{availability.date} <div className="drops-down"><h3> اجراء<div className="drop"><ul><li onClick={function(e){openModal();setdata(availability); settime(availability.date) ;setbuttomtext("تعديل");setcheck(false)}}>تعديل</li><li onClick={()=>window.confirm("Are you sure you wish to delete this item?")&& ondel(availability)}>مسح</li></ul> </div></h3></div>
+                                    <td>{dayjs(availability.date).format('DD/MM/YYYY') } <div className="drops-down"><h3> اجراء<div className="drop"><ul><li onClick={function(e){openModal();setdata(availability); settime(availability.date) ;setbuttomtext("تعديل");setcheck(false)}}>تعديل</li><li onClick={()=>window.confirm("Are you sure you wish to delete this item?")&& ondel(availability)}>مسح</li></ul> </div></h3></div>
                                     {/* <Select className="cat-sele" defaultValue={{label:"اجراء"}} options={[
                                         {value:"اجراء" ,label:"اجراء"},
                                         { value: 'edit', label: <button onClick={openModal}> تعديل</button> },
